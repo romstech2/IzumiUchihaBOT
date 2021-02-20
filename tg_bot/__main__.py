@@ -23,7 +23,6 @@ Yo {}, I'm *{}*!
 
 I'm a group manager bot  that can help you manage your groups with tons of extra features.
 
-Join our [News Channel](https://t.me/IzumiUchihaNews) ( @IzumiUchihaNews ) for announcements regarding bot updates, new features and possible bug fixes!
 
 Lastly, tap on the help button for any help/assistance with the bot!
 """
