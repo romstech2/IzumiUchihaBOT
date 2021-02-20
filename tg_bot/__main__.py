@@ -22,9 +22,9 @@ PM_START_TEXT = """
 Yo {}, I'm *{}*!
 
 I'm a group manager bot  that can help you manage your groups with tons of extra features.
+Manage by @RomsTech
 
-
-Lastly, tap on the help button for any help/assistance with the bot!
+Lastly, tap on the help button for any /help assistance with the bot!
 """
 
 SOURCE_STRING = """
