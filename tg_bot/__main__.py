@@ -21,14 +21,14 @@ from tg_bot.modules.helper_funcs.misc import paginate_modules
 PM_START_TEXT = """
 Yo {}, I'm *{}*!
 
-I'm a group manager bot  that can help you manage your groups with tons of extra features.
+I'm a group manager bot  that can help you manage your groups with tons of extra features. (**cough** kanged from fellow bots **cough**)
 Manage by @RomsTech
 
 Lastly, tap on the help button for any /help assistance with the bot!
 """
 
 SOURCE_STRING = """
-I'm built in python3, using the python-telegram-bot library, and am fully opensource - you can find what makes me tick [here](https://github.com/soulr344/IzumiUchihaBOT) (originally based on [this](https://github.com/corsicanu/tgbot))
+I'm built in python3, using the python-telegram-bot library, and am fully opensource (yes, its kanged, whattya expect?) - you can find what makes me fap everyday [here](https://github.com/romstech2/RomsTech_Bot) (originally based on [this](https://github.com/corsicanu/tgbot))
 """
 
 HELP_STRINGS = """
