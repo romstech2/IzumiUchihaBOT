@@ -26,32 +26,21 @@ def phh(update: Update, context: CallbackContext):
 
 def magisk(update: Update, context: CallbackContext):
     bot = context.bot
-    url = 'https://raw.githubusercontent.com/topjohnwu/magisk_files/'
+    url = 'https://raw.githubusercontent.com/topjohnwu/magisk-files/master/'
     releases = ""
     for type, branch in {
-            "Stable": ["master/stable", "master"],
-            "Beta": ["master/beta", "master"],
-            "Canary": ["canary/canary", "canary"]
+            "Stable": "stable",
+            "Beta": "beta",
+            "Canary": "canary"
     }.items():
-        data = get(url + branch[0] + '.json').json()
-        if str(type) == "Canary":
-            data["magisk"][
-                "link"] = "https://github.com/topjohnwu/magisk_files/raw/canary/" + data[
-                    "magisk"]["link"]
-            data["app"][
-                "link"] = "https://github.com/topjohnwu/magisk_files/raw/canary/" + data[
-                    "app"]["link"]
-            data["uninstaller"][
-                "link"] = "https://github.com/topjohnwu/magisk_files/raw/canary/" + data[
-                    "uninstaller"]["link"]
-        releases += f'*{type}*: \n' \
-                    f'• [Changelog](https://github.com/topjohnwu/magisk_files/blob/{branch[1]}/notes.md)\n' \
-                    f'• Zip - [{data["magisk"]["version"]}-{data["magisk"]["versionCode"]}]({data["magisk"]["link"]}) \n' \
-                    f'• App - [{data["app"]["version"]}-{data["app"]["versionCode"]}]({data["app"]["link"]}) \n' \
-                    f'• Uninstaller - [{data["magisk"]["version"]}-{data["magisk"]["versionCode"]}]({data["uninstaller"]["link"]})\n\n'
+        data = get(url + branch + '.json').json()
+        releases += f'*• {type}* - `{data["magisk"]["version"]}-{data["magisk"]["versionCode"]}` → ' \
+                    f'[Notes]({data["magisk"]["note"]}) / ' \
+                    f'[Magisk]({data["magisk"]["link"]}) \n'
 
     del_msg = update.message.reply_text(
-        "*Latest Magisk Releases:*\n{}".format(releases),
+        "*Latest Magisk Releases:*\n{} \n" \
+        "*Install/uninstall instructions*:\nhttps://topjohnwu.github.io/Magisk/install.html".format(releases),
         parse_mode=ParseMode.MARKDOWN,
         disable_web_page_preview=True)
     time.sleep(300)
