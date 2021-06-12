@@ -13,3 +13,4 @@ lxml
 pytz
 pyyaml
 Pillow
+google_trans_new
