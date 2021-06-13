@@ -2,7 +2,7 @@ import importlib
 from typing import Union
 
 from future.utils import string_types
-from AstrakoBot import dispatcher
+from tg_bot import dispatcher
 from tg_bot.modules.helper_funcs.handlers import CMD_STARTERS, SpamChecker
 from tg_bot.modules.helper_funcs.misc import is_module_loaded
 from telegram import ParseMode, Update
