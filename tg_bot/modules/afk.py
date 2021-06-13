@@ -3,8 +3,8 @@ import html
 from datetime import datetime
 from tg_bot.modules.sql.clear_cmd_sql import get_clearcmd
 
-from tg_bo import dispatcher
-from tg_bo.modules.disable import (
+from tg_bot import dispatcher
+from tg_bot.modules.disable import (
     DisableAbleCommandHandler,
     DisableAbleMessageHandler,
 )
