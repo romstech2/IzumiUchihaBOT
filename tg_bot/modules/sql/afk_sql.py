@@ -1,8 +1,7 @@
 import threading
 
-from tg_bot.modules.sql import Column, UnicodeText, Boolean, Integer
-
 from tg_bot.modules.sql import BASE, SESSION
+from sqlalchemy import Boolean, Column, Integer, UnicodeText
 
 
 class AFK(BASE):
@@ -32,9 +31,10 @@ def is_afk(user_id):
 
 
 def check_afk_status(user_id):
-    if user_id in AFK_USERS:
-        return True, AFK_USERS[user_id]
-    return False, ""
+    try:
+        return SESSION.query(AFK).get(user_id)
+    finally:
+        SESSION.close()
 
 
 def set_afk(user_id, reason=""):
@@ -44,7 +44,6 @@ def set_afk(user_id, reason=""):
             curr = AFK(user_id, reason, True)
         else:
             curr.is_afk = True
-            curr.reason = reason
 
         AFK_USERS[user_id] = reason
 
@@ -67,13 +66,25 @@ def rm_afk(user_id):
         return False
 
 
+def toggle_afk(user_id, reason=""):
+    with INSERTION_LOCK:
+        curr = SESSION.query(AFK).get(user_id)
+        if not curr:
+            curr = AFK(user_id, reason, True)
+        elif curr.is_afk:
+            curr.is_afk = False
+        elif not curr.is_afk:
+            curr.is_afk = True
+        SESSION.add(curr)
+        SESSION.commit()
+
+
 def __load_afk_users():
     global AFK_USERS
     try:
         all_afk = SESSION.query(AFK).all()
         AFK_USERS = {
-            user.user_id: user.reason
-            for user in all_afk if user.is_afk
+            user.user_id: user.reason for user in all_afk if user.is_afk
         }
     finally:
         SESSION.close()
