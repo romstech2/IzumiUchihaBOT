@@ -1,7 +1,6 @@
 import random
 import html
 from datetime import datetime
-import humanize
 from tg_bot.modules.sql.clear_cmd_sql import get_clearcmd
 
 from tg_bo import dispatcher
@@ -150,7 +149,7 @@ def check_afk(update: Update, context: CallbackContext, user_id: int, fst_name: 
         if int(userc_id) == int(user_id):
             return
 
-        time = humanize.naturaldelta(datetime.now() - user.time)
+        
 
         if not user.reason:
             res = f"{fst_name} is *afk*.\nLast seen: `{time} ago`"
