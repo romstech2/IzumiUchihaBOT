@@ -288,35 +288,15 @@ EMOJI = (
     "\U0001F9D0",
     "\U0001F632",
 )
+GAY_TEMPLATES = (
+    "{user1} feeling gay with {user2}",
+   
+)
 
 GMAPS_LOC = "https://maps.googleapis.com/maps/api/geocode/json"
 GMAPS_TIME = "https://maps.googleapis.com/maps/api/timezone/json"
 
 SMACK_STRING = """[smack my beach up!!](https://vimeo.com/31482159)"""
-
-
-def runs(update: Update, context: CallbackContext):
-    bot = context.bot
-    running = update.effective_message
-    if running.reply_to_message:
-        update.effective_message.reply_to_message.reply_text(
-            random.choice(RUN_STRINGS))
-    else:
-        update.effective_message.reply_text(random.choice(RUN_STRINGS))
-
-
-def smack(update: Update, context: CallbackContext):
-    bot = context.bot
-    msg = update.effective_message
-    if msg.reply_to_message:
-        update.effective_message.reply_to_message.reply_text(
-            SMACK_STRING,
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True)
-    else:
-        update.effective_message.reply_text(SMACK_STRING,
-                                            parse_mode=ParseMode.MARKDOWN,
-                                            disable_web_page_preview=True)
 
 
 def slap(update: Update, context: CallbackContext):
@@ -352,6 +332,77 @@ def slap(update: Update, context: CallbackContext):
         user2 = curr_user
 
     temp = random.choice(SLAP_TEMPLATES)
+    item = random.choice(ITEMS)
+    hit = random.choice(HIT)
+    throw = random.choice(THROW)
+    emoji = random.choice(EMOJI)
+
+    repl = temp.format(user1=user1,
+                       user2=user2,
+                       item=item,
+                       hits=hit,
+                       throws=throw,
+                       emoji=emoji)
+
+    reply_text(repl, parse_mode=ParseMode.MARKDOWN)
+
+def runs(update: Update, context: CallbackContext):
+    bot = context.bot
+    running = update.effective_message
+    if running.reply_to_message:
+        update.effective_message.reply_to_message.reply_text(
+            random.choice(RUN_STRINGS))
+    else:
+        update.effective_message.reply_text(random.choice(RUN_STRINGS))
+
+
+def smack(update: Update, context: CallbackContext):
+    bot = context.bot
+    msg = update.effective_message
+    if msg.reply_to_message:
+        update.effective_message.reply_to_message.reply_text(
+            SMACK_STRING,
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True)
+    else:
+        update.effective_message.reply_text(SMACK_STRING,
+                                            parse_mode=ParseMode.MARKDOWN,
+                                            disable_web_page_preview=True)
+
+
+def gay(update: Update, context: CallbackContext):
+    bot, args = context.bot, context.args
+    msg = update.effective_message  # type: Optional[Message]
+
+    # reply to correct message
+    reply_text = msg.reply_to_message.reply_text if msg.reply_to_message else msg.reply_text
+
+    # get user who sent message
+    if msg.from_user.username:
+        curr_user = "@" + escape_markdown(msg.from_user.username)
+    else:
+        curr_user = "[{}](tg://user?id={})".format(msg.from_user.first_name,
+                                                   msg.from_user.id)
+
+    user_id = extract_user(update.effective_message, args)
+    if user_id == bot.id or user_id == 777000:
+        user1 = "[{}](tg://user?id={})".format(bot.first_name, bot.id)
+        user2 = curr_user
+    elif user_id:
+        slapped_user = bot.get_chat(user_id)
+        user1 = curr_user
+        if slapped_user.username:
+            user2 = "@" + escape_markdown(slapped_user.username)
+        else:
+            user2 = "[{}](tg://user?id={})".format(slapped_user.first_name,
+                                                   slapped_user.id)
+
+    # if no target found, bot targets the sender
+    else:
+        user1 = "[{}](tg://user?id={})".format(bot.first_name, bot.id)
+        user2 = curr_user
+
+    temp = random.choice(GAY_TEMPLATES)
     item = random.choice(ITEMS)
     hit = random.choice(HIT)
     throw = random.choice(THROW)
@@ -693,6 +744,7 @@ SMACK_HANDLER = DisableAbleCommandHandler("smack", smack, run_async=True)
 SLAP_HANDLER = DisableAbleCommandHandler("slap", slap, run_async=True)
 PUNCH_HANDLER = DisableAbleCommandHandler("punch", punch, run_async=True)
 SPANK_HANDLER = DisableAbleCommandHandler("spank", slap, run_async=True)
+GAY_HANDLER = DisableAbleCommandHandler("gay", gay, run_async=True)
 INFO_HANDLER = DisableAbleCommandHandler("info", info, run_async=True)
 ECHO_HANDLER = CommandHandler("echo",
                               echo,
@@ -726,3 +778,4 @@ dispatcher.add_handler(MD_HELP_HANDLER)
 dispatcher.add_handler(STATS_HANDLER)
 dispatcher.add_handler(GDPR_HANDLER)
 dispatcher.add_handler(GPS_HANDLER)
+dispatcher.add_handler(GAY_HANDLER)
